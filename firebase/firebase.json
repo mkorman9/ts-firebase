@@ -4,7 +4,7 @@
     "indexes": "firestore.indexes.json"
   },
   "emulators": {
-    "singleProjectMode": false,
+    "singleProjectMode": true,
     "auth": {
       "port": 9099
     },

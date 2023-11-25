@@ -3,6 +3,7 @@ import {z} from 'zod';
 
 const ConfigSchema = z.object({
   FIREBASE_USE_EMULATOR: z.string().transform(v => ['true', '1'].includes(v.toLowerCase())),
+  FIREBASE_EMULATOR_PROJECT: z.string().optional(),
   FIREBASE_CREDENTIALS: z.string().optional(),
   FIREBASE_CREDENTIALS_PATH: z.string().optional()
 });

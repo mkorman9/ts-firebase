@@ -2,6 +2,7 @@ import config from './config';
 import './hooks';
 
 import * as firebase from 'firebase-admin';
+import {accessInvoices, accessTodoItems, createAnonymousUser} from './client';
 
 const resolveFirebaseCredentials = () => {
   if (config.FIREBASE_CREDENTIALS) {
@@ -21,7 +22,7 @@ const createFirebaseApp = () => {
     process.env['FIREBASE_AUTH_EMULATOR_HOST'] = 'localhost:9099';
     process.env['FIRESTORE_EMULATOR_HOST'] = 'localhost:9100';
     return firebase.initializeApp({
-      projectId: 'emulator-project'
+      projectId: config.FIREBASE_EMULATOR_PROJECT
     });
   } else {
     console.log('Firebase integration is set up to use a Service Account');
@@ -42,10 +43,9 @@ const app = createFirebaseApp();
 
   const items = await todoItemsCollection.get();
 
-  console.log('Todo items:');
-  items.forEach(snapshot => {
-    console.log(snapshot.data().content);
-  });
+  console.log(`(Admin) Todo items: ${items.docs.map(s => s.data().content)}`);
+
+  console.log(`(Client) Todo items: ${(await accessTodoItems()).map(i => i.content)}`);
 })();
 
 (async () => {
@@ -56,17 +56,19 @@ const app = createFirebaseApp();
 
   const invoices = await invoicesCollection.get();
 
-  console.log('Invoices:');
-  invoices.forEach(snapshot => {
-    console.log(snapshot.data().invoiceNumber);
-  });
+  console.log(`(Admin) Invoices: ${invoices.docs.map(s => s.data().invoiceNumber)}`);
+
+  try {
+    console.log(`(Client) Invoices: ${(await accessInvoices()).map(i => i.invoiceNumber)}`);
+  } catch (e) {
+    console.log('(Client) Could not access invoices');
+  }
 })();
 
 (async () => {
-  const user = await app.auth().createUser({});
+  const {user, token} = await createAnonymousUser();
   console.log(`Created user ${user.uid}`);
 
-  const token = await app.auth().createCustomToken(user.uid);
-
-  //const tokenAuthResult = await app.auth().verifyIdToken(token);
+  const tokenAuthResult = await app.auth().verifyIdToken(token);
+  console.log(`Authorized user ${tokenAuthResult.uid}`);
 })();
