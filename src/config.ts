@@ -7,7 +7,6 @@ const int = () => z.preprocess(Number, z.number().int());
 
 const ConfigSchema = z.object({
   FIREBASE_USE_EMULATOR: bool(),
-  FIREBASE_EMULATOR_PROJECT: str().optional(),
   FIREBASE_CREDENTIALS: str().optional(),
   FIREBASE_CREDENTIALS_PATH: str().optional()
 });

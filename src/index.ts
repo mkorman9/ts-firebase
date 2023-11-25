@@ -22,7 +22,7 @@ const createFirebaseApp = () => {
     process.env['FIREBASE_AUTH_EMULATOR_HOST'] = 'localhost:9099';
     process.env['FIRESTORE_EMULATOR_HOST'] = 'localhost:9100';
     return firebase.initializeApp({
-      projectId: config.FIREBASE_EMULATOR_PROJECT
+      projectId: 'emulator-project'
     });
   } else {
     console.log('Firebase integration is set up to use a Service Account');

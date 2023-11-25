@@ -3,4 +3,5 @@ node_modules/
 lib/
 .env
 firebase/*.log
+firebase/.firebaserc
 serviceAccountKey.json

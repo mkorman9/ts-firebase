@@ -7,7 +7,7 @@ const getConfig = () => {
   if (config.FIREBASE_USE_EMULATOR) {
     return {
       apiKey: 'fake-api-key',
-      projectId: config.FIREBASE_EMULATOR_PROJECT
+      projectId: 'emulator-project'
     };
   } else {
     return {
