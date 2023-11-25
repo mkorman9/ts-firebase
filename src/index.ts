@@ -37,29 +37,33 @@ const app = createFirebaseApp();
 
 (async () => {
   const todoItemsCollection = app.firestore().collection('todo_items');
-  await todoItemsCollection.add({
-    content: 'Hello world'
-  });
+  if ((await todoItemsCollection.count().get()).data().count == 0) {
+    await todoItemsCollection.add({
+      content: 'Hello world'
+    });
+  }
 
   const items = await todoItemsCollection.get();
 
-  console.log(`(Admin) Todo items: ${items.docs.map(s => s.data().content)}`);
+  console.log(`(Admin) Todo items: [${items.docs.map(s => s.data().content)}]`);
 
-  console.log(`(Client) Todo items: ${(await accessTodoItems()).map(i => i.content)}`);
+  console.log(`(Client) Todo items: [${(await accessTodoItems()).map(i => i.content)}]`);
 })();
 
 (async () => {
   const invoicesCollection = app.firestore().collection('invoices');
-  await invoicesCollection.add({
-    invoiceNumber: '2023/AAA/123'
-  });
+  if ((await invoicesCollection.count().get()).data().count == 0) {
+    await invoicesCollection.add({
+      invoiceNumber: '2023/AAA/123'
+    });
+  }
 
   const invoices = await invoicesCollection.get();
 
-  console.log(`(Admin) Invoices: ${invoices.docs.map(s => s.data().invoiceNumber)}`);
+  console.log(`(Admin) Invoices: [${invoices.docs.map(s => s.data().invoiceNumber)}]`);
 
   try {
-    console.log(`(Client) Invoices: ${(await accessInvoices()).map(i => i.invoiceNumber)}`);
+    console.log(`(Client) Invoices: [${(await accessInvoices()).map(i => i.invoiceNumber)}]`);
   } catch (e) {
     console.log('(Client) Could not access invoices');
   }
