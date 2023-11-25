@@ -1,11 +1,15 @@
 import 'dotenv/config';
 import {z} from 'zod';
 
+const str = () => z.string();
+const bool = () => z.string().transform(v => ['true', '1'].includes(v.toLowerCase()));
+const int = () => z.preprocess(Number, z.number().int());
+
 const ConfigSchema = z.object({
-  FIREBASE_USE_EMULATOR: z.string().transform(v => ['true', '1'].includes(v.toLowerCase())),
-  FIREBASE_EMULATOR_PROJECT: z.string().optional(),
-  FIREBASE_CREDENTIALS: z.string().optional(),
-  FIREBASE_CREDENTIALS_PATH: z.string().optional()
+  FIREBASE_USE_EMULATOR: bool(),
+  FIREBASE_EMULATOR_PROJECT: str().optional(),
+  FIREBASE_CREDENTIALS: str().optional(),
+  FIREBASE_CREDENTIALS_PATH: str().optional()
 });
 
 export default (() => {
