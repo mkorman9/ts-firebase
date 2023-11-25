@@ -6,13 +6,23 @@ import {accessInvoices, accessTodoItems, createAnonymousUser} from './client';
 
 const resolveFirebaseCredentials = () => {
   if (config.FIREBASE_CREDENTIALS) {
-    const credentialsObject = JSON.parse(config.FIREBASE_CREDENTIALS);
-    return firebase.credential.cert(credentialsObject);
-  } else if (config.FIREBASE_CREDENTIALS_PATH) {
-    return firebase.credential.cert(config.FIREBASE_CREDENTIALS_PATH);
-  } else {
-    return firebase.credential.applicationDefault();
+    try {
+      const credentialsObject = JSON.parse(config.FIREBASE_CREDENTIALS);
+      return firebase.credential.cert(credentialsObject);
+    } catch (e) {
+      console.log(`🚫 Failed to load Firebase credentials from FIREBASE_CREDENTIALS: ${e}`);
+    }
   }
+
+  if (config.FIREBASE_CREDENTIALS_PATH) {
+    try {
+      return firebase.credential.cert(config.FIREBASE_CREDENTIALS_PATH);
+    } catch (e) {
+      console.log(`🚫 Failed to load Firebase credentials from FIREBASE_CREDENTIALS_PATH: ${e}`);
+    }
+  }
+
+  return firebase.credential.applicationDefault();
 };
 
 const createFirebaseApp = () => {
