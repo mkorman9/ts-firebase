@@ -45,3 +45,23 @@ cp .env.template .env
 npm ci
 npm start
 ```
+
+## Service Account credentials resolving
+
+The app tries to resolve Service Account credentials the following way:
+
+- First it tries to read `FIREBASE_CREDENTIALS` environment variable, which is expected to contain
+a raw JSON with the content of `serviceAccountKey.json`. This is the best way on platforms that
+don't allow defining custom filesystem mount points, such as Amazon ECS or Azure Container Apps. 
+It can be defined as:
+
+```sh
+export FIREBASE_CREDENTIALS=$(cat serviceAccountKey.json | jq -r tostring)
+```
+
+- Then it tries to read credentials from a file specified by `FIREBASE_CREDENTIALS_PATH`
+environment variable. Its value defaults to `./serviceAccountKey.json`.
+
+- If the above methods fail, the app defaults to resolving the
+[Default Credentials](https://firebase.google.com/docs/admin/setup#initialize-sdk).
+These are predefined on Google environments with the correct Service Account assigned, such as Goole Cloud Run.
