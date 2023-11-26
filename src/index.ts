@@ -47,7 +47,7 @@ const app = createFirebaseApp();
 
 (async () => {
   const todoItemsCollection = app.firestore().collection('todo_items');
-  if ((await todoItemsCollection.count().get()).data().count == 0) {
+  if ((await todoItemsCollection.count().get()).data().count === 0) {
     await todoItemsCollection.add({
       content: 'Hello world'
     });
@@ -62,7 +62,7 @@ const app = createFirebaseApp();
 
 (async () => {
   const invoicesCollection = app.firestore().collection('invoices');
-  if ((await invoicesCollection.count().get()).data().count == 0) {
+  if ((await invoicesCollection.count().get()).data().count === 0) {
     await invoicesCollection.add({
       invoiceNumber: '2023/AAA/123'
     });
