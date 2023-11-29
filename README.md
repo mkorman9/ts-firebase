@@ -64,4 +64,4 @@ environment variable. Its value defaults to `./serviceAccountKey.json`.
 
 - If the above methods fail, the app defaults to resolving the
 [Default Credentials](https://firebase.google.com/docs/admin/setup#initialize-sdk).
-These are predefined on Google environments with the correct Service Account assigned, such as Goole Cloud Run.
+These are predefined on Google environments with the correct Service Account assigned, such as Google Cloud Run.
